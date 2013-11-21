@@ -80,6 +80,12 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
+    simplecov (0.7.1)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.7.1)
+    simplecov-html (0.7.1)
+    simplecov-rcov (0.2.3)
+      simplecov (>= 0.4.1)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -102,4 +108,5 @@ PLATFORMS
 DEPENDENCIES
   rails (= 3.2.15)
   rspec-rails (= 2.14.0)
+  simplecov-rcov (= 0.2.3)
   unicorn (= 4.6.3)
