@@ -31,6 +31,12 @@ class Scheme < OpenStruct
     end
   end
 
+  def as_json(options={})
+    attrs = self.marshal_dump
+    valid_keys = [:identifier, :title, :priority] + FACET_KEYS
+    attrs.select { |k,v| valid_keys.include?(k.to_sym) }
+  end
+
   private
 
   def self.map_schemes_by_identifier(schemes)
@@ -49,4 +55,5 @@ class Scheme < OpenStruct
     end
     facets
   end
+
 end
