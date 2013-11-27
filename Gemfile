@@ -15,6 +15,7 @@ else
 end
 
 group :development, :test do
+  gem 'capybara', '2.1.0'
   gem 'rspec-rails', '2.14.0'
   gem 'simplecov-rcov', '0.2.3', :require => false
   gem 'ci_reporter', '1.9.0'
