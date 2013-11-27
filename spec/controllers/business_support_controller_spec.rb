@@ -11,11 +11,12 @@ describe BusinessSupportController do
     it "should accept json requests" do
       get :search, :format => :json
       response.should be_success
+      response.header['Content-Type'].should include 'application/json'
     end
 
     it "should deny other formats" do
       get :search
-      response.code.should == "406"
+      response.status.should == 406
     end
   end
 end

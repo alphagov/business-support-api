@@ -57,14 +57,14 @@ describe Scheme do
           {'business_support_identifier' => '666'}.merge(facets),
           {'business_support_identifier' => '999'}.merge(facets)
         ])
-     
+
         artefact1 = {'identifier' => '666', 'title' => 'artefact1'}
         artefact2 = {'identifier' => '999', 'title' => 'artefact2'}
-        
+
         GdsApi::ContentApi.any_instance.stub(:business_support_schemes).
         and_return("results" => [artefact1, artefact2])
-      
-      
+
+
       Scheme.should_receive(:new).with(artefact1.merge(facets)).and_return(:scheme1)
       Scheme.should_receive(:new).with(artefact2.merge(facets)).and_return(:scheme2)
 
@@ -141,6 +141,16 @@ describe Scheme do
       s = Scheme.new("details" => {"foo" => "bar", "something_else" => "wibble"})
 
       s.details.should == nil
+    end
+  end
+
+  describe "as json" do
+    it "should expose valid attrs as json" do
+      scheme = Scheme.new("business_support_identifier" => "1", "title" => "The Biz",
+        "priority" => "1", "business_sizes" => "up-to-249", "locations" => "england",
+        "stages" => "start-up", "support_types" => "grant", "not_recognised" => "1")
+      scheme.as_json.keys.should_not include(:not_recognised)
+      scheme.as_json.keys.should include(:title)
     end
   end
 end
