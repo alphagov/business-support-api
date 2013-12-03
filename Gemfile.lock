@@ -155,6 +155,7 @@ DEPENDENCIES
   ci_reporter (= 1.9.0)
   exception_notification (= 4.0.1)
   gds-api-adapters (= 7.17.1)
+  link_header (= 0.0.7)
   plek (= 1.1.0)
   rails (= 3.2.15)
   rspec-rails (= 2.14.0)
