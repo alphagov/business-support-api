@@ -58,6 +58,10 @@ describe "Search for business support" do
 
     parsed_response = JSON.parse(page.body)
     parsed_response["total"].should == 1
+    parsed_response["pageSize"].should == 1
+    parsed_response["currentPage"].should == 1
+    parsed_response["startIndex"].should == 1
+    parsed_response["pages"].should == 1
     results = parsed_response["results"]
     results.first["title"].should == "Graduate start-up scheme"
     results.first["locations"].should == ["london"]
