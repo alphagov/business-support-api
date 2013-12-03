@@ -18,15 +18,6 @@ module Pagination
     raise "Invalid page number: #{page_param.inspect}"
   end
 
-  # Wrapper class to access information from a paginated result set.
-  #
-  # Example use:
-  #
-  #   p = PaginatedResultSet.new(Tag.page(3))
-  #
-  #   p.current_page  # 3
-  #   p.results       # [#<Tag ...>, ...]
-  #
   class PaginatedResultSet
 
     attr_reader :page_number, :page_size, :total
