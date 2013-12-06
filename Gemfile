@@ -5,6 +5,7 @@ gem 'rails', '3.2.15'
 gem 'unicorn', '4.6.3'
 gem 'exception_notification', '4.0.1'
 gem 'aws-ses', '0.5.0', :require => 'aws/ses'
+gem 'link_header', '0.0.7'
 
 gem 'plek', '1.1.0'
 

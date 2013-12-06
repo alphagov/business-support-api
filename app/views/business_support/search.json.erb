@@ -1,1 +1,1 @@
-{"_response_info":{"status":"ok"},"description":"Business Support Schemes!","total":<%= @count %>,"startIndex":1,"pageSize":<%= @count %>,"currentPage":1,"pages":1,"results":<%= raw @json %>}
+{"_response_info":{"status":"ok","links":<%= raw @schemes.links.to_json %>},"description":"Business Support Schemes!","total":<%= @schemes.total %>,"startIndex":<%= @schemes.start_index %>,"pageSize":<%= @schemes.results.size %>,"currentPage":<%= @schemes.page_number %>,"pages":<%= @schemes.pages %>,"results":<%= raw @schemes.results.to_json %>}

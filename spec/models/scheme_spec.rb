@@ -69,41 +69,59 @@ describe Scheme do
 
       schemes = Scheme.lookup(:sectors => @sector, :stage => @stage, :size=> @size,
                               :support_types => @support_types, :locations => @location)
-      schemes.should == [:scheme1, :scheme2]
+      schemes.results.should == [:scheme1, :scheme2]
     end
 
-    it "should order the schemes by the imminence api result order" do
+    describe "lookup" do
 
-      artefact1 = {"identifier" => "1", "title" => "artefact1"}
-      artefact2 = {"identifier" => "2", "title" => "artefact2"}
-      artefact3 = {"identifier" => "3", "title" => "artefact3"}
-      artefact4 = {"identifier" => "4", "title" => "artefact4"}
+      before do
+        artefact1 = {"identifier" => "1", "title" => "artefact1"}
+        artefact2 = {"identifier" => "2", "title" => "artefact2"}
+        artefact3 = {"identifier" => "3", "title" => "artefact3"}
+        artefact4 = {"identifier" => "4", "title" => "artefact4"}
 
-      facets = {
-        'business_sizes' => [@size],
-        'locations' => [@location],
-        'sectors' => [@sector],
-        'stages' => [@stage],
-        'support_types' => @support_types
-      }
+        facets = {
+          'business_sizes' => [@size],
+          'locations' => [@location],
+          'sectors' => [@sector],
+          'stages' => [@stage],
+          'support_types' => @support_types
+        }
 
-      GdsApi::Imminence.any_instance.stub(:business_support_schemes).
-        and_return("results" => [
-                   {"business_support_identifier" => "4"}.merge(facets),
-                   {"business_support_identifier" => "1"}.merge(facets),
-                   {"business_support_identifier" => "3"}.merge(facets),
-                   {"business_support_identifier" => "2"}.merge(facets)])
+        GdsApi::Imminence.any_instance.stub(:business_support_schemes).
+          and_return("results" => [
+                     {"business_support_identifier" => "4"}.merge(facets),
+                     {"business_support_identifier" => "1"}.merge(facets),
+                     {"business_support_identifier" => "3"}.merge(facets),
+                     {"business_support_identifier" => "2"}.merge(facets)])
 
-      GdsApi::ContentApi.any_instance.stub(:business_support_schemes).
-        and_return("results" => [artefact1, artefact2, artefact3, artefact4])
+        GdsApi::ContentApi.any_instance.stub(:business_support_schemes).
+          and_return("results" => [artefact1, artefact2, artefact3, artefact4])
 
-      Scheme.should_receive(:new).with(artefact1.merge(facets)).and_return(:scheme1)
-      Scheme.should_receive(:new).with(artefact2.merge(facets)).and_return(:scheme2)
-      Scheme.should_receive(:new).with(artefact3.merge(facets)).and_return(:scheme3)
-      Scheme.should_receive(:new).with(artefact4.merge(facets)).and_return(:scheme4)
+        Scheme.should_receive(:new).with(artefact1.merge(facets)).and_return(:scheme1)
+        Scheme.should_receive(:new).with(artefact2.merge(facets)).and_return(:scheme2)
+        Scheme.should_receive(:new).with(artefact3.merge(facets)).and_return(:scheme3)
+        Scheme.should_receive(:new).with(artefact4.merge(facets)).and_return(:scheme4)
+      end
 
-      schemes = Scheme.lookup(:sectors => @sector, :stage => @stage, :size => @size, :support_types => @support_types, :location => @location)
-      schemes.should == [:scheme4, :scheme1, :scheme3, :scheme2]
+      it "should order the schemes by the imminence api result order" do
+        schemes = Scheme.lookup(:sectors => @sector, :stage => @stage, :size => @size, :support_types => @support_types, :location => @location)
+        schemes.results.should == [:scheme4, :scheme1, :scheme3, :scheme2]
+        schemes.links.should == []
+        schemes.start_index.should == 1
+        schemes.total.should == 4
+        schemes.page_size.should == 50
+        schemes.page_number.should == 1
+      end
+
+      it "should paginate the results" do
+        schemes = Scheme.lookup(:sectors => @sector, :stage => @stage, :size => @size, :support_types => @support_types, :location => @location, :page_size => 2, :page_number => 2)
+        schemes.results.should == [:scheme3, :scheme2]
+        schemes.start_index.should == 3
+        schemes.total.should == 4
+        schemes.page_size.should == 2
+        schemes.page_number.should == 2
+      end
     end
 
     it "should return empty array without calling content_api if imminence returns no results" do
@@ -111,7 +129,7 @@ describe Scheme do
       GdsApi::ContentApi.any_instance.should_not_receive(:business_support_schemes)
 
       schemes = Scheme.lookup(:sectors => @sector, :stage => @stage, :size => @size, :support_types => @support_types, :location => @location)
-      schemes.should == []
+      schemes.results.should == []
     end
   end
 
