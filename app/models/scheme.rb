@@ -23,6 +23,10 @@ class Scheme < OpenStruct
     paginate(schemes, params[:page_number], params[:page_size])
   end
 
+  def self.find_by_slug(slug)
+    content_api.artefact(slug)
+  end
+
   def initialize(artefact = {})
     super()
     if (details = artefact.delete("details"))

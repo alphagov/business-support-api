@@ -11,6 +11,14 @@ class BusinessSupportController < ApplicationController
     end
   end
 
+  def show
+    @scheme = Scheme.find_by_slug(params[:slug])
+
+    respond_to do |format|
+      format.json
+    end
+  end
+
   private
 
   def filtered_params

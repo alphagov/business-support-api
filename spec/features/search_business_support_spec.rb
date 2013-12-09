@@ -45,7 +45,7 @@ describe "Search for business support" do
     )
   end
   it "should return all schemes where no filtering facets are specified" do
-    visit "/search.json"
+    visit "/business-support-schemes.json"
 
     parsed_response = JSON.parse(page.body)
     parsed_response["total"].should == 2
@@ -54,7 +54,7 @@ describe "Search for business support" do
     results.second["title"].should == "Manufacturing Services scheme - Wales"
   end
   it "should render suitable schemes as json" do
-    visit "/search.json?business_sizes=up-to-249&locations=london&sectors=education&stages=grow-and-sustain"
+    visit "/business-support-schemes.json?business_sizes=up-to-249&locations=london&sectors=education&stages=grow-and-sustain"
 
     parsed_response = JSON.parse(page.body)
     parsed_response["total"].should == 1
