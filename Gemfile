@@ -8,6 +8,7 @@ gem 'aws-ses', '0.5.0', :require => 'aws/ses'
 gem 'link_header', '0.0.7'
 
 gem 'plek', '1.1.0'
+gem 'logstasher', '0.4.0'
 
 if ENV['API_DEV']
   gem 'gds-api-adapters', :path => '../gds-api-adapters'
