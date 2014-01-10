@@ -26,6 +26,12 @@ class BusinessSupportController < ApplicationController
     params.select { |k,v| valid_keys.include?(k.to_sym) }.symbolize_keys
   end
 
+  # Returns a pagination url to be used in the JSON response.
+  #
+  # When requested through the public_api endpoint (distunguised by the
+  # presence of the `API-PREFIX` HTTP header), this is the public API URL.
+  #
+  # For other requests, this is the business-support-schemes URL.
   def pagination_url(page_number)
     api_prefix = request.headers["HTTP_API_PREFIX"]
     if api_prefix.present?
