@@ -78,8 +78,7 @@ GEM
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
     null_logger (0.0.1)
-    plek (1.1.0)
-      builder
+    plek (1.7.0)
     polyglot (0.3.3)
     rack (1.4.5)
     rack-cache (1.2)
@@ -160,7 +159,7 @@ DEPENDENCIES
   gds-api-adapters (= 7.17.1)
   link_header (= 0.0.7)
   logstasher (= 0.4.1)
-  plek (= 1.1.0)
+  plek (= 1.7.0)
   rails (= 3.2.15)
   rspec-rails (= 2.14.0)
   simplecov-rcov (= 0.2.3)
