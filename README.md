@@ -1,4 +1,8 @@
-business-support-api
-====================
+# Business support api
 
-Stand alone api for business support schemes
+A Ruby on Rails application providing searchable business support data.
+
+## Requirements
+
+- [imminence](https://github.com/alphagov/imminence)
+- [contentapi](https://github.com/alphagov/govuk_content_api)
