@@ -151,9 +151,11 @@ describe Scheme do
     it "should expose valid attrs as json" do
       scheme = Scheme.new("business_support_identifier" => "1", "title" => "The Biz",
         "priority" => "1", "business_sizes" => "up-to-249", "locations" => "england",
-        "stages" => "start-up", "support_types" => "grant", "not_recognised" => "1")
+        "stages" => "start-up", "support_types" => "grant", "not_recognised" => "1",
+        "id" => "http://test.com/api/foo.json")
       scheme.as_json.keys.should_not include(:not_recognised)
       scheme.as_json.keys.should include(:title)
+      scheme.as_json.keys.should include(:id)
     end
   end
 end

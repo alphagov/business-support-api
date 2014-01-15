@@ -37,7 +37,7 @@ class Scheme < OpenStruct
 
   def as_json(options={})
     attrs = self.marshal_dump
-    valid_keys = [:identifier, :title, :priority] + FACET_KEYS
+    valid_keys = [:id, :identifier, :title, :priority] + FACET_KEYS
     attrs.select { |k,v| valid_keys.include?(k.to_sym) }
   end
 
