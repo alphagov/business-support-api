@@ -30,6 +30,15 @@ describe "Pagination" do
     paged.results.size.should == 8
     paged.results.should == [191,192,193,194,195,196,197,198]
   end
+  it "should sanitise paging params" do
+    paged = paginate(@collection, -1000, -1)
+    paged.page_size.should == 50
+    paged.page_number.should == 1
+
+    paged = paginate(@collection, 500, 50)
+    paged.page_size.should == 50
+    paged.page_number.should == 4
+  end
   it "should populate page links" do
     paged = paginate(@collection, nil, nil)
     paged.populate_page_links { |n| "/foo?num=#{n}" }
