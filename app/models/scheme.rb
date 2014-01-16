@@ -20,25 +20,18 @@ class Scheme < OpenStruct
   end
 
   def self.find_by_slug(slug)
-    content_api.artefact(slug)
+    Scheme.new(content_api.artefact(slug).to_hash)
   end
 
   def initialize(artefact = {})
     super()
-    if (details = artefact.delete("details"))
-      details.each do |k,v|
-        self.send("#{k}=", v)
-      end
-    end
     artefact.each do |k,v|
       self.send("#{k}=", v)
     end
   end
 
   def as_json(options={})
-    attrs = self.marshal_dump
-    valid_keys = [:id, :identifier, :title, :priority] + FACET_KEYS
-    attrs.select { |k,v| valid_keys.include?(k.to_sym) }
+    self.marshal_dump
   end
 
   private

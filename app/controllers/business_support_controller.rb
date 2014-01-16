@@ -26,10 +26,10 @@ class BusinessSupportController < ApplicationController
   end
 
   def show
-    @scheme = Scheme.find_by_slug(params[:slug])
+    scheme = Scheme.find_by_slug(params[:slug])
 
     respond_to do |format|
-      format.json
+      format.json { render json: SchemePresenter.new(scheme, view_context) }
     end
   end
 
