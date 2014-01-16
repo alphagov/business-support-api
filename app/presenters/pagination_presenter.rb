@@ -15,6 +15,7 @@ class PaginationPresenter
 
     @result_set = paginate(results, @view_context.params[:page_number], page_size)
 
+    # Populate page links by passing a block to be called for the previous and next pages.
     @result_set.populate_page_links { |page_number| pagination_url(page_number) }
   end
 
@@ -34,11 +35,12 @@ class PaginationPresenter
   end
 
   def pagination_url(page_number)
+
     page_params = @view_context.params.merge({:page_number => page_number})
     api_prefix = @view_context.request.headers["HTTP_API_PREFIX"]
 
     if api_prefix.present?
-      path_with_query = @view_context.url_for(page_params.merge({:only_path => true}))
+      path_with_query = @view_context.url_for(page_params.merge(:only_path => true))
       "#{Plek.current.website_root}/#{api_prefix}#{path_with_query}"
     else
       @view_context.url_for(page_params)

@@ -6,7 +6,7 @@ class BusinessSupportController < ApplicationController
     @schemes = Scheme.lookup(filtered_params)
 
     respond_to do |format|
-      format.json { render json: PaginatedResultSetPresenter.new(@schemes, view_context) }
+      format.json { render json: PaginationPresenter.new(@schemes, view_context) }
     end
   end
 
