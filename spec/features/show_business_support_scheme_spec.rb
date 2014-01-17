@@ -12,12 +12,14 @@ describe "View a business support scheme" do
         "details" => { "short_description" => "Some blurb abour the Graduate start-up scheme",
                        "body" => "More about the scheme, all the detailed explanation." } }.to_json)
 
+    Plek.any_instance.stub(:website_root).and_return("https://www.gov.uk")
+
     visit '/business-support-schemes/graduate-start-up.json'
   end
   it "should display the details for the scheme" do
     parsed_response = JSON.parse(page.body)
 
-    parsed_response["id"].should == "https://www.gov.uk/graduate-start-up.json"
+    parsed_response["id"].should == "http://www.example.com/business-support-schemes/graduate-start-up.json"
     parsed_response["title"].should == "Graduate start up"
     parsed_response["web_url"].should == "https://www.gov.uk/graduate-start-up"
     parsed_response.keys.should_not include("super_secret_field")
