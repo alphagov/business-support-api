@@ -2,9 +2,10 @@ require 'link_header'
 
 module Pagination
 
-  def paginate(results, page_param, page_size)
-    page_number = Integer(page_param || 1)
-    page_size = Integer(page_size || 50)
+  def paginate(results, page_number, page_size)
+    page_size = sane_page_size(page_size)
+    page_count = Pagination.page_count(results.size, page_size)
+    page_number = sane_page_number(page_count, page_number)
 
     start_index = (page_number - 1) * page_size
 
@@ -14,8 +15,25 @@ module Pagination
       page = results
     end
     PaginatedResultSet.new(page, page_number, page_size, results.size)
-  rescue ArgumentError
-    raise "Invalid page number: #{page_param.inspect}"
+  end
+
+  def sane_page_number(page_count, page_number_param)
+    page_number = page_number_param.to_i
+    page_number = 1 if page_number < 1
+    page_number = page_count if page_number > page_count
+    page_number
+  end
+
+  def sane_page_size(page_size_param)
+    page_size = page_size_param.to_i
+    page_size = 50 if page_size < 1
+    page_size
+  end
+
+  def self.page_count(total, page_size)
+    whole_pages, part_page_size = total.divmod(page_size)
+    whole_pages += 1 if part_page_size > 0
+    whole_pages
   end
 
   class PaginatedResultSet
@@ -34,9 +52,7 @@ module Pagination
     end
 
     def pages
-      whole_pages, part_page_size = total.divmod(page_size)
-      whole_pages += 1 if part_page_size > 0
-      whole_pages
+      Pagination.page_count(total, page_size)
     end
 
     def results
