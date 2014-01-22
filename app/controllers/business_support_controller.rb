@@ -1,12 +1,27 @@
+require 'page_link_helper'
+require 'pagination'
+
 class BusinessSupportController < ApplicationController
 
   before_filter :set_expiry
 
+  include Pagination
+
   def search
-    @schemes = Scheme.lookup(filtered_params)
+    schemes = Scheme.lookup(filtered_params)
+    api_prefix = request.headers["HTTP_API_PREFIX"]
+
+    if schemes.empty? or api_prefix
+      page_size = params[:page_size]
+    else
+      page_size = schemes.size
+    end
+
+    schemes = paginate(schemes, params[:page_number], page_size)
+    link_helper = PageLinkHelper.new(schemes, view_context)
 
     respond_to do |format|
-      format.json { render json: PaginationPresenter.new(@schemes, view_context) }
+      format.json { render json: PaginationPresenter.new(schemes, link_helper) }
     end
   end
 
