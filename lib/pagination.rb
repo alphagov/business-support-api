@@ -1,5 +1,3 @@
-require 'link_header'
-
 module Pagination
 
   def paginate(results, page_number, page_size)
@@ -59,38 +57,12 @@ module Pagination
       @results ||= @scope.to_a
     end
 
-    def links
-      @links || [].freeze
-    end
-
     def first_page?
       page_number == 1
     end
 
     def last_page?
       page_number == pages
-    end
-
-    # Populate the inter-page links on this result set.
-    #
-    # The `generate_link` block should take a page number and return a URL.
-    def populate_page_links(&generate_link)
-      @links = []
-
-      unless last_page?
-        links.push LinkHeader::Link.new(
-          generate_link.call(page_number + 1),
-          [["rel", "next"]]
-        )
-      end
-      unless first_page?
-        links.push LinkHeader::Link.new(
-          generate_link.call(page_number - 1),
-          [["rel", "previous"]]
-        )
-      end
-
-      @links.freeze
     end
   end
 end

@@ -39,11 +39,4 @@ describe "Pagination" do
     paged.page_size.should == 50
     paged.page_number.should == 4
   end
-  it "should populate page links" do
-    paged = paginate(@collection, nil, nil)
-    paged.populate_page_links { |n| "/foo?num=#{n}" }
-    paged.links.size.should == 1
-    paged.links.first.href.should == "/foo?num=2"
-    paged.links.first.attr_pairs.should == [["rel","next"]]
-  end
 end

@@ -69,7 +69,7 @@ describe Scheme do
 
       schemes = Scheme.lookup(:sectors => @sector, :stage => @stage, :size=> @size,
                               :support_types => @support_types, :locations => @location)
-      schemes.results.should == [:scheme1, :scheme2]
+      schemes.should == [:scheme1, :scheme2]
     end
 
     describe "lookup" do
@@ -106,21 +106,7 @@ describe Scheme do
 
       it "should order the schemes by the imminence api result order" do
         schemes = Scheme.lookup(:sectors => @sector, :stage => @stage, :size => @size, :support_types => @support_types, :location => @location)
-        schemes.results.should == [:scheme4, :scheme1, :scheme3, :scheme2]
-        schemes.links.should == []
-        schemes.start_index.should == 1
-        schemes.total.should == 4
-        schemes.page_size.should == 50
-        schemes.page_number.should == 1
-      end
-
-      it "should paginate the results" do
-        schemes = Scheme.lookup(:sectors => @sector, :stage => @stage, :size => @size, :support_types => @support_types, :location => @location, :page_size => 2, :page_number => 2)
-        schemes.results.should == [:scheme3, :scheme2]
-        schemes.start_index.should == 3
-        schemes.total.should == 4
-        schemes.page_size.should == 2
-        schemes.page_number.should == 2
+        schemes.should == [:scheme4, :scheme1, :scheme3, :scheme2]
       end
     end
 
@@ -129,7 +115,7 @@ describe Scheme do
       GdsApi::ContentApi.any_instance.should_not_receive(:business_support_schemes)
 
       schemes = Scheme.lookup(:sectors => @sector, :stage => @stage, :size => @size, :support_types => @support_types, :location => @location)
-      schemes.results.should == []
+      schemes.should == []
     end
   end
 
