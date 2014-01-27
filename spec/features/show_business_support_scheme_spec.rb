@@ -19,7 +19,7 @@ describe "View a business support scheme" do
   it "should display the details for the scheme" do
     parsed_response = JSON.parse(page.body)
 
-    parsed_response["id"].should == "http://www.example.com/business-support-schemes/graduate-start-up.json"
+    parsed_response["id"].should == "https://www.gov.uk/business-support-schemes/graduate-start-up.json"
     parsed_response["title"].should == "Graduate start up"
     parsed_response["web_url"].should == "https://www.gov.uk/graduate-start-up"
     parsed_response.keys.should_not include("super_secret_field")

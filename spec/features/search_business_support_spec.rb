@@ -3,11 +3,13 @@ require 'spec_helper'
 describe "Search for business support" do
   before do
     content_api_has_business_support_scheme(
+      "id" => "https://www.gov.uk/graduate-start-up.json",
       "title" => "Graduate start-up scheme",
       "web_url" => "https://www.gov.uk/graduate-start-up",
       "identifier" => "graduate-start-up",
       "short_description" => "Some blurb abour the Graduate start-up scheme")
     content_api_has_business_support_scheme(
+      "id" => "https://www.gov.uk/wales/manufacturing-services-scheme.json",
       "title" => "Manufacturing Services scheme - Wales",
       "web_url" => "https://www.gov.uk/wales/manufacturing-services-scheme",
       "identifier" => "manufacturing-services-wales",

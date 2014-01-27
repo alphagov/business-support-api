@@ -1,4 +1,4 @@
-require 'page_link_helper'
+require 'url_helper'
 require 'pagination'
 
 class BusinessSupportController < ApplicationController
@@ -9,7 +9,6 @@ class BusinessSupportController < ApplicationController
 
   def search
     schemes = Scheme.lookup(filtered_params)
-    api_prefix = request.headers["HTTP_API_PREFIX"]
 
     if schemes.empty? or api_prefix
       page_size = params[:page_size]
@@ -18,7 +17,7 @@ class BusinessSupportController < ApplicationController
     end
 
     schemes = paginate(schemes, params[:page_number], page_size)
-    link_helper = PageLinkHelper.new(schemes, view_context)
+    link_helper = UrlHelper.new(api_prefix, params, schemes)
 
     respond_to do |format|
       format.json { render json: PaginationPresenter.new(schemes, link_helper) }
@@ -29,7 +28,7 @@ class BusinessSupportController < ApplicationController
     scheme = Scheme.find_by_slug(params[:slug])
 
     respond_to do |format|
-      format.json { render json: SchemePresenter.new(scheme, view_context) }
+      format.json { render json: SchemePresenter.new(scheme, UrlHelper.new(api_prefix, params)) }
     end
   end
 
@@ -38,6 +37,10 @@ class BusinessSupportController < ApplicationController
   def filtered_params
     valid_keys = Scheme::FACET_KEYS + [:page_number, :page_size]
     params.select { |k,v| valid_keys.include?(k.to_sym) }.symbolize_keys
+  end
+
+  def api_prefix
+    request.headers["HTTP_API_PREFIX"]
   end
 
 end
