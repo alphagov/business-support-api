@@ -6,7 +6,7 @@ class UrlHelper
 
   attr_reader :api_prefix, :params, :results
 
-  def initialize(api_prefix, params, results=nil)
+  def initialize(api_prefix=nil, params={}, results=nil)
     @api_prefix = api_prefix
     @params = params
     @results = results
