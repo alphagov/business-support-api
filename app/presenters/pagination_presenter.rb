@@ -8,6 +8,7 @@ class PaginationPresenter
   end
 
   def as_json(options={})
+    schemes = @link_helper.update_scheme_urls(results.results)
     {
       :_response_info => {
         :status => "ok",
@@ -18,7 +19,7 @@ class PaginationPresenter
       :page_size => results.results.size,
       :current_page => results.page_number,
       :pages => results.pages,
-      :results => results.results
+      :results => schemes
     }
   end
 end
