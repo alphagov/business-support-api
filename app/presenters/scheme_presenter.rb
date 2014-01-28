@@ -6,7 +6,7 @@ class SchemePresenter
   end
 
   def as_json(options={})
-    attrs = @scheme.marshal_dump
+    attrs = @scheme.as_json
     attrs[:id] = @url_helper.build_scheme_url(attrs[:id])
     valid_keys = [:id, :identifier, :title, :details, :web_url, :priority] + Scheme::FACET_KEYS
     attrs.select { |k,v| valid_keys.include?(k.to_sym) }
