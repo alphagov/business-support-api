@@ -3,16 +3,15 @@ require 'spec_helper'
 describe PaginationPresenter do
 
   it "should initialize pagination values and paging links" do
-    schemes = [].tap do |ary|
-      25.times { |n| ary << :"scheme#{n+1}" }
-    end
-    results = Pagination::PaginatedResultSet.new(schemes, 2, 25, 100)
-    link_helper = double(:links => [
-      LinkHeader::Link.new("http://test.gov.uk/schemes.json?page_number=3&page_size=25",[["rel", "next"]]),
-      LinkHeader::Link.new("http://test.gov.uk/schemes.json?page_number=1&page_size=25",[["rel", "previous"]])
-    ])
+    Plek.any_instance.stub(:website_root).and_return("http://test.gov.uk")
 
-    presenter = PaginationPresenter.new(results, link_helper)
+    schemes = []
+    25.times { |n| schemes << Scheme.new({:id => "http://test.gov.uk/scheme#{n+1}.json"}) }
+
+    results = Pagination::PaginatedResultSet.new(schemes, 2, 25, 100)
+    url_helper = UrlHelper.new(nil, {:page_number => 2, :page_size => 25}, results)
+
+    presenter = PaginationPresenter.new(results, url_helper)
     json_hash = presenter.as_json
 
     json_hash[:start_index].should == 26
@@ -24,7 +23,7 @@ describe PaginationPresenter do
 
     links = json_hash[:_response_info][:links]
     links.size.should == 2
-    links.first.href.should == "http://test.gov.uk/schemes.json?page_number=3&page_size=25"
-    links.last.href.should == "http://test.gov.uk/schemes.json?page_number=1&page_size=25"
+    links.first.href.should == "http://test.gov.uk/business-support-schemes.json?page_number=3&page_size=25"
+    links.last.href.should == "http://test.gov.uk/business-support-schemes.json?page_number=1&page_size=25"
   end
 end

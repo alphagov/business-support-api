@@ -121,39 +121,13 @@ describe Scheme do
 
   describe "constructing from content_api artefact hash" do
     it "should assign all top-level fields to the openstruct" do
-      s = Scheme.new("foo" => "bar", "something_else" => "wibble")
+      s = Scheme.new("foo" => "bar", "something_else" => "wibble", "details" => {
+        "foo" => "foo", "bar" => "bar"
+      })
 
       s.foo.should == "bar"
       s.something_else.should == "wibble"
-    end
-
-    it "should assign all details fields to the openstruct" do
-      s = Scheme.new("details" => {"foo" => "bar", "something_else" => "wibble"})
-
-      s.foo.should == "bar"
-      s.something_else.should == "wibble"
-    end
-
-    it "should not let details fields overwrite top-level fields" do
-      s = Scheme.new("format" => "top level format", "details" => {"format" => "details format"})
-
-      s.format.should == "top level format"
-    end
-
-    it "should not add a details member to the openstruct" do
-      s = Scheme.new("details" => {"foo" => "bar", "something_else" => "wibble"})
-
-      s.details.should == nil
-    end
-  end
-
-  describe "as json" do
-    it "should expose valid attrs as json" do
-      scheme = Scheme.new("business_support_identifier" => "1", "title" => "The Biz",
-        "priority" => "1", "business_sizes" => "up-to-249", "locations" => "england",
-        "stages" => "start-up", "support_types" => "grant", "not_recognised" => "1")
-      scheme.as_json.keys.should_not include(:not_recognised)
-      scheme.as_json.keys.should include(:title)
+      s.details.should == { "foo" => "foo", "bar" => "bar" }
     end
   end
 end

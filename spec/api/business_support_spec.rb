@@ -5,7 +5,10 @@ feature 'serving business support schemes' do
   it "should build appropriate pagination urls when requested through the public API" do
     Plek.any_instance.stub(:website_root).and_return("https://www.gov.uk")
     schemes = [].tap do |ary|
-      100.times { |n| ary << {"title" => "Super funding #{n+1}"} }
+      100.times do |n|
+        ary << Scheme.new({"id" => "http://www.gov.uk/super-funding.json",
+                           "title" => "Super funding #{n+1}"})
+      end
     end
     Scheme.stub(:lookup).and_return(schemes)
 
