@@ -13,7 +13,7 @@ gem 'logstasher', '0.4.8'
 if ENV['API_DEV']
   gem 'gds-api-adapters', :path => '../gds-api-adapters'
 else
-  gem 'gds-api-adapters', '7.17.1'
+ gem 'gds-api-adapters', '10.0.0'
 end
 
 group :development, :test do
