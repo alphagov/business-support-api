@@ -10,11 +10,11 @@ gem 'link_header', '0.0.7'
 gem 'plek', '1.7.0'
 gem 'logstasher', '0.4.8'
 
-if ENV['API_DEV']
+#if ENV['API_DEV']
   gem 'gds-api-adapters', :path => '../gds-api-adapters'
-else
-  gem 'gds-api-adapters', '7.17.1'
-end
+#else
+# gem 'gds-api-adapters', '7.17.1'
+#end
 
 group :development, :test do
   gem 'capybara', '2.1.0'

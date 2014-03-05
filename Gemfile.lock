@@ -1,3 +1,13 @@
+PATH
+  remote: ../gds-api-adapters
+  specs:
+    gds-api-adapters (9.2.0)
+      link_header
+      lrucache (~> 0.1.1)
+      null_logger
+      plek
+      rest-client (~> 1.6.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -53,12 +63,6 @@ GEM
     exception_notification (4.0.1)
       actionmailer (>= 3.0.4)
       activesupport (>= 3.0.4)
-    gds-api-adapters (7.17.1)
-      link_header
-      lrucache (~> 0.1.1)
-      null_logger
-      plek
-      rest-client (~> 1.6.3)
     hike (1.2.3)
     i18n (0.6.9)
     journey (1.0.4)
@@ -158,7 +162,7 @@ DEPENDENCIES
   capybara (= 2.1.0)
   ci_reporter (= 1.9.0)
   exception_notification (= 4.0.1)
-  gds-api-adapters (= 7.17.1)
+  gds-api-adapters!
   link_header (= 0.0.7)
   logstasher (= 0.4.8)
   plek (= 1.7.0)
