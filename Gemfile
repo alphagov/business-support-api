@@ -9,6 +9,7 @@ gem 'link_header', '0.0.7'
 
 gem 'plek', '1.7.0'
 gem 'logstasher', '0.4.8'
+gem 'airbrake', '3.1.15'
 
 if ENV['API_DEV']
   gem 'gds-api-adapters', :path => '../gds-api-adapters'
