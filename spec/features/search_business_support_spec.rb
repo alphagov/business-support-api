@@ -2,31 +2,21 @@ require 'spec_helper'
 
 describe "Search for business support" do
   before do
-    graduate_start_up_attrs = {
+    @graduate_start_up_attrs = {
       "id" => "https://www.gov.uk/graduate-start-up.json",
       "title" => "Graduate start-up scheme",
       "web_url" => "https://www.gov.uk/graduate-start-up",
       "identifier" => "graduate-start-up",
       "short_description" => "Some blurb abour the Graduate start-up scheme"}
-    manufacturing_services_wales_attrs = {
+    @manufacturing_services_wales_attrs = {
       "id" => "https://www.gov.uk/wales/manufacturing-services-scheme.json",
       "title" => "Manufacturing Services scheme - Wales",
       "web_url" => "https://www.gov.uk/wales/manufacturing-services-scheme",
       "identifier" => "manufacturing-services-wales",
       "short_description" => "Some blurb about the welsh Manufacturing services scheme"
     }
-    content_api_has_business_support_scheme(graduate_start_up_attrs, {})
-    content_api_has_business_support_scheme(manufacturing_services_wales_attrs, {})
-    facets = {"support_types" => ["finance", "equity", "grant", "loan", "expertise-and-advice", "recognition-award"]}
-    content_api_has_business_support_scheme(graduate_start_up_attrs.merge(facets), facets)
-    content_api_has_business_support_scheme(manufacturing_services_wales_attrs.merge(facets), facets)
-    facets = {
-        "business_sizes" => ["up-to-249"],
-        "locations" => ["london"],
-        "sectors" => ["education"],
-        "stages" => ["grow-and-sustain"]
-      }
-    content_api_has_business_support_scheme(graduate_start_up_attrs.merge(facets), facets)
+    content_api_has_business_support_scheme(@graduate_start_up_attrs, {})
+    content_api_has_business_support_scheme(@manufacturing_services_wales_attrs, {})
   end
   it "should return all schemes where no filtering facets are specified" do
     visit "/business-support-schemes.json"
@@ -37,7 +27,19 @@ describe "Search for business support" do
     results.second["title"].should == "Manufacturing Services scheme - Wales"
   end
   it "should render suitable schemes as json" do
-    visit "/business-support-schemes.json?business_sizes=up-to-249&locations=london&sectors=education&stages=grow-and-sustain"
+    facets = {"support_types" => ["finance", "equity", "grant", "loan", "expertise-and-advice", "recognition-award"]}
+    content_api_has_business_support_scheme(@manufacturing_services_wales_attrs.merge(facets), facets)
+
+    facets = {
+        "areas" => ["1","666","9999"],
+        "business_sizes" => ["up-to-249"],
+        "locations" => ["london"],
+        "sectors" => ["education"],
+        "stages" => ["grow-and-sustain"]
+      }
+    content_api_has_business_support_scheme(@graduate_start_up_attrs.merge(facets), facets)
+
+    visit "/business-support-schemes.json?areas=666&business_sizes=up-to-249&locations=london&sectors=education&stages=grow-and-sustain"
 
     parsed_response = JSON.parse(page.body)
     parsed_response["total"].should == 1

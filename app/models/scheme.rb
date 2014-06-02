@@ -4,7 +4,7 @@ require 'gds_api/helpers'
 class Scheme < OpenStruct
   extend GdsApi::Helpers
 
-  FACET_KEYS = [:business_sizes, :locations, :sectors, :stages, :support_types]
+  FACET_KEYS = [:areas, :business_sizes, :locations, :sectors, :stages, :support_types]
 
   def self.lookup(params={})
     response = content_api.business_support_schemes(params)
