@@ -4,6 +4,7 @@ describe Scheme do
 
   describe "looking up schemes" do
     before :each do
+      @areas = ['12','34']
       @sector = 'health'
       @stage = 'start-up'
       @size = 'under-10'
@@ -20,15 +21,17 @@ describe Scheme do
 
     it "should fetch the schemes from content_api" do
       GdsApi::ContentApi.any_instance.should_receive(:business_support_schemes).
-        with(:sectors => @sector, :stages => @stage, :business_sizes => @size, :support_types => @support_types, :locations => @location).
+        with(:areas => @areas, :sectors => @sector, :stages => @stage,
+             :business_sizes => @size, :support_types => @support_types, :locations => @location).
           and_return("results" => [])
 
-      Scheme.lookup(:sectors => @sector, :stages => @stage, :business_sizes => @size, :support_types => @support_types, :locations => @location)
+      Scheme.lookup(:areas => @areas, :sectors => @sector, :stages => @stage,
+                    :business_sizes => @size, :support_types => @support_types, :locations => @location)
     end
 
     it "should construct instances of Scheme for each result and return them" do
       facets = {
-        'business_sizes' => [], 'locations' => ['england'],
+        'areas' => ['12','34'], 'business_sizes' => [], 'locations' => ['england'],
         'sectors' => ['manufacturing'], 'stages' => [], 'support_types' => ['grant']
       }
 
@@ -41,7 +44,7 @@ describe Scheme do
       Scheme.should_receive(:new).with(artefact1).and_return(:scheme1)
       Scheme.should_receive(:new).with(artefact2).and_return(:scheme2)
 
-      schemes = Scheme.lookup(:sectors => @sector, :stage => @stage, :size=> @size,
+      schemes = Scheme.lookup(:areas => @areas, :sectors => @sector, :stage => @stage, :size=> @size,
                               :support_types => @support_types, :locations => @location)
       schemes.should == [:scheme1, :scheme2]
     end
