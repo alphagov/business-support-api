@@ -35,7 +35,7 @@ class BusinessSupportController < ApplicationController
   private
 
   def filtered_params
-    valid_keys = Scheme::FACET_KEYS + [:page_number, :page_size]
+    valid_keys = Scheme::FACET_KEYS + [:postcode, :page_number, :page_size]
     params.select { |k,v| valid_keys.include?(k.to_sym) }.symbolize_keys
   end
 

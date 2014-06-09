@@ -7,6 +7,10 @@ class Scheme < OpenStruct
   FACET_KEYS = [:business_sizes, :locations, :sectors, :stages, :support_types]
 
   def self.lookup(params={})
+
+    postcode = params.delete(:postcode)
+    params[:areas] = area_identifiers(postcode) if postcode
+
     response = content_api.business_support_schemes(params)
 
     response["results"].map do |s|
@@ -27,5 +31,11 @@ class Scheme < OpenStruct
 
   def as_json(options={})
     self.marshal_dump
+  end
+
+  def self.area_identifiers(postcode)
+    areas_response = imminence_api.areas_for_postcode(postcode)
+    areas = areas_response["results"].map { |area| area["id"] }
+    areas.join(",")
   end
 end
