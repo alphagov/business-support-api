@@ -34,14 +34,14 @@ describe "Search for business support" do
     end
     it "should filter the schemes by facet values" do
        facets = {
+          "areas" => ["london"],
           "business_sizes" => ["up-to-249"],
-          "locations" => ["london"],
           "sectors" => ["education"],
           "stages" => ["grow-and-sustain"]
         }
       content_api_has_business_support_scheme(@graduate_start_up_attrs.merge(facets), facets)
 
-      visit "/business-support-schemes.json?business_sizes=up-to-249&locations=london&sectors=education&stages=grow-and-sustain"
+      visit "/business-support-schemes.json?areas=london&business_sizes=up-to-249&sectors=education&stages=grow-and-sustain"
 
       parsed_response = JSON.parse(page.body)
       parsed_response["total"].should == 1
@@ -51,21 +51,20 @@ describe "Search for business support" do
       parsed_response["pages"].should == 1
       results = parsed_response["results"]
       results.first["title"].should == "Graduate start-up scheme"
-      results.first["locations"].should == ["london"]
+      results.first["areas"].should == ["london"]
     end
 
     it "should filter the schemes by facet values and areas" do
-      imminence_has_areas_for_postcode("WC2B%206SE",[{"id" => 3, "name" => "London"}])
+      imminence_has_areas_for_postcode("WC2B%206SE",[{"slug" => "london", "name" => "London"}])
       facets = {
-          "areas" => ["1", "3", "77"],
+          "areas" => ["london", "wales", "scotland"],
           "business_sizes" => ["up-to-249"],
-          "locations" => ["london"],
           "sectors" => ["education"],
           "stages" => ["grow-and-sustain"]
         }
       content_api_has_business_support_scheme(@graduate_start_up_attrs.merge(facets), facets)
 
-      visit "/business-support-schemes.json?postcode=WC2B%206SE&business_sizes=up-to-249&locations=london&sectors=education&stages=grow-and-sustain"
+      visit "/business-support-schemes.json?postcode=WC2B%206SE&business_sizes=up-to-249&sectors=education&stages=grow-and-sustain"
 
       parsed_response = JSON.parse(page.body)
       parsed_response["total"].should == 1
@@ -75,8 +74,7 @@ describe "Search for business support" do
       parsed_response["pages"].should == 1
       results = parsed_response["results"]
       results.first["title"].should == "Graduate start-up scheme"
-      results.first["locations"].should == ["london"]
-      results.first["areas"].should == ["1","3","77"]
+      results.first["areas"].should == ["london","wales","scotland"]
     end
   end
 end

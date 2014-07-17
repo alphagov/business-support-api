@@ -4,7 +4,7 @@ require 'gds_api/helpers'
 class Scheme < OpenStruct
   extend GdsApi::Helpers
 
-  FACET_KEYS = [:business_sizes, :locations, :sectors, :stages, :support_types]
+  FACET_KEYS = [:areas, :business_sizes, :locations, :sectors, :stages, :support_types]
 
   def self.lookup(params={})
 
@@ -35,7 +35,7 @@ class Scheme < OpenStruct
 
   def self.area_identifiers(postcode)
     areas_response = imminence_api.areas_for_postcode(postcode)
-    areas = areas_response["results"].map { |area| area["id"] }
+    areas = areas_response["results"].map { |area| area["slug"] }
     areas.join(",")
   end
 end
