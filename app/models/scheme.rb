@@ -35,6 +35,8 @@ class Scheme < OpenStruct
 
   def self.area_identifiers(postcode)
     areas_response = imminence_api.areas_for_postcode(postcode)
+    return [] unless areas_response
+
     areas = areas_response["results"].map { |area| area["slug"] }
     areas.join(",")
   end

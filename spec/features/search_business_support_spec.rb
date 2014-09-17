@@ -76,5 +76,17 @@ describe "Search for business support" do
       results.first["title"].should == "Graduate start-up scheme"
       results.first["areas"].should == ["london","wales","scotland"]
     end
+
+    it "should return no results with an incomplete postcode" do
+      imminence_has_areas_for_postcode("WC2B",[])
+      facets = { "areas" => ["london", "wales", "scotland"] }
+      content_api_has_business_support_scheme(@graduate_start_up_attrs.merge(facets), facets)
+
+      visit "/business-support-schemes.json?postcode=WC2B"
+
+      parsed_response = JSON.parse(page.body)
+      parsed_response["total"].should == 0
+    end
+
   end
 end
