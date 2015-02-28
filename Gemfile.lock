@@ -151,6 +151,7 @@ DEPENDENCIES
   gds-api-adapters (= 10.16.0)
   link_header (= 0.0.7)
   logstasher (= 0.4.8)
+  minitest (= 5.5.1)
   plek (= 1.7.0)
   rails (= 4.1.9)
   rspec-rails (= 2.14.0)
