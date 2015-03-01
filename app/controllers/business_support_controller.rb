@@ -4,6 +4,7 @@ require 'pagination'
 class BusinessSupportController < ApplicationController
 
   before_filter :set_expiry
+  before_filter :only_json
 
   include Pagination
 
@@ -41,6 +42,10 @@ class BusinessSupportController < ApplicationController
 
   def api_prefix
     request.headers["HTTP_API_PREFIX"]
+  end
+
+  def only_json
+    render :nothing => true, :status => 406 unless params[:format] == 'json'
   end
 
 end
