@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.17'
+gem 'rails', '4.1.9'
 
 gem 'unicorn', '4.6.3'
 gem 'link_header', '0.0.7'
@@ -21,4 +21,5 @@ group :development, :test do
   gem 'simplecov-rcov', '0.2.3', :require => false
   gem 'ci_reporter', '1.9.0'
   gem 'webmock', '1.11.0', :require => false
+  gem 'minitest', '5.5.1'
 end
