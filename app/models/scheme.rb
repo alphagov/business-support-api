@@ -5,6 +5,9 @@ class Scheme < OpenStruct
   extend GdsApi::Helpers
 
   FACET_KEYS = [:areas, :business_sizes, :locations, :sectors, :stages, :support_types]
+  # This list should stay in sync with Publisher's AREA_TYPES list
+  # (https://github.com/alphagov/publisher/blob/master/app/models/area.rb#L7).
+  WHITELISTED_AREA_CODES = ["EUR", "CTY", "DIS", "LBO", "LGD", "MTD", "UTA"]
 
   def self.lookup(params={})
 
@@ -37,7 +40,9 @@ class Scheme < OpenStruct
     areas_response = imminence_api.areas_for_postcode(postcode)
     return [] unless areas_response
 
-    areas = areas_response["results"].map { |area| area["slug"] }
-    areas.join(",")
+    areas = areas_response["results"].map do |area|
+      area["slug"] if WHITELISTED_AREA_CODES.include?(area["type"])
+    end
+    areas.reject(&:blank?).join(",")
   end
 end

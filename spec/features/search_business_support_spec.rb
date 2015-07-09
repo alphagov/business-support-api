@@ -55,7 +55,7 @@ describe "Search for business support" do
     end
 
     it "should filter the schemes by facet values and areas" do
-      imminence_has_areas_for_postcode("WC2B%206SE",[{"slug" => "london", "name" => "London"}])
+      imminence_has_areas_for_postcode("WC2B%206SE",[{"slug" => "london", "name" => "London", "type" => "EUR"}])
       facets = {
           "areas" => ["london", "wales", "scotland"],
           "business_sizes" => ["up-to-249"],

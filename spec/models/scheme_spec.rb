@@ -83,4 +83,16 @@ describe Scheme do
       s.details.should == { "foo" => "foo", "bar" => "bar" }
     end
   end
+
+  describe "area codes returned from imminence" do
+    it "should only use whitelisted area types" do
+      area1 = {"slug"=>"north-east", "name"=>"North East", "country_name"=>"England", "type"=>"LAC"}
+      area2 = {"slug"=>"european-parliament", "name"=>"European Parliament", "country_name"=>"-", "type"=>"EUP"}
+      area3 = {"slug"=>"london", "name"=>"London", "country_name"=>"England", "type"=>"EUR"}
+      area4 = {"slug"=>"", "name"=>"Blank Slug", "country_name"=>"England", "type"=>"BLK"}
+
+      GdsApi::Imminence.any_instance.stub(:areas_for_postcode).and_return("results" => [area1,area2,area3])
+      Scheme.area_identifiers("E5 9LR").should == 'london'
+    end
+  end
 end
