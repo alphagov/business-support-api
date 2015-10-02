@@ -4,7 +4,7 @@ require 'gds_api/helpers'
 class Scheme < OpenStruct
   extend GdsApi::Helpers
 
-  FACET_KEYS = [:areas, :business_sizes, :locations, :sectors, :stages, :support_types]
+  FACET_KEYS = [:areas, :business_sizes, :sectors, :stages, :support_types]
   # This list should stay in sync with Publisher's AREA_TYPES list
   # (https://github.com/alphagov/publisher/blob/master/app/models/area.rb#L7).
   WHITELISTED_AREA_CODES = ["EUR", "CTY", "DIS", "LBO", "LGD", "MTD", "UTA"]

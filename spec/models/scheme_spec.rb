@@ -8,7 +8,6 @@ describe Scheme do
       @stage = "start-up"
       @size = "under-10"
       @support_types = %w(finance loan)
-      @location = "wales"
 
       GdsApi::ContentApi.any_instance.stub(:business_support_schemes)
         .and_return("results" => [])
@@ -27,7 +26,6 @@ describe Scheme do
           :stages => @stage,
           :business_sizes => @size,
           :support_types => @support_types,
-          :locations => @location,
         )
         .and_return("results" => [])
 
@@ -36,14 +34,12 @@ describe Scheme do
         :stages => @stage,
         :business_sizes => @size,
         :support_types => @support_types,
-        :locations => @location,
       )
     end
 
     it "should construct instances of Scheme for each result and return them" do
       facets = {
         "business_sizes" => [],
-        "locations" => ["england"],
         "sectors" => ["manufacturing"],
         "stages" => [],
         "support_types" => ["grant"],
@@ -63,7 +59,6 @@ describe Scheme do
         :stage => @stage,
         :size=> @size,
         :support_types => @support_types,
-        :locations => @location,
       )
 
       schemes.should == [:scheme1, :scheme2]
@@ -91,7 +86,6 @@ describe Scheme do
           :stage => @stage,
           :size => @size,
           :support_types => @support_types,
-          :location => @location,
         )
 
         schemes.should == [:scheme4, :scheme1, :scheme3, :scheme2]
