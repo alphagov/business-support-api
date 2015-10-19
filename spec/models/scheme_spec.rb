@@ -133,12 +133,6 @@ describe Scheme do
         "country_name" => "England",
         "type" => "EUR",
       }
-      area4 = {
-        "slug" => "",
-        "name" => "Blank Slug",
-        "country_name" => "England",
-        "type" => "BLK",
-      }
 
       GdsApi::Imminence.any_instance.stub(:areas_for_postcode)
         .and_return("results" => [area1,area2,area3])
