@@ -5,7 +5,7 @@ class Scheme < OpenStruct
   extend GdsApi::Helpers
 
   FACET_KEYS = [
-    :areas,
+    :area_gss_codes,
     :business_sizes,
     :locations,
     :sectors,
@@ -19,7 +19,7 @@ class Scheme < OpenStruct
 
   def self.lookup(params={})
     postcode = params.delete(:postcode)
-    params[:areas] = area_identifiers(postcode) if postcode
+    params[:area_gss_codes] = area_identifiers(postcode) if postcode
 
     response = content_api.business_support_schemes(params)
 
@@ -41,7 +41,7 @@ class Scheme < OpenStruct
     return [] unless areas_response
 
     areas = areas_response["results"].map do |area|
-      area["slug"] if WHITELISTED_AREA_CODES.include?(area["type"])
+      area["codes"]["gss"] if WHITELISTED_AREA_CODES.include?(area["type"])
     end
     areas.reject(&:blank?).join(",")
   end

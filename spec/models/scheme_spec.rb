@@ -146,7 +146,7 @@ describe Scheme do
       GdsApi::Imminence.any_instance.stub(:areas_for_postcode)
         .and_return("results" => [area1,area2,area3])
 
-      Scheme.area_identifiers("E5 9LR").should == 'london'
+      Scheme.area_identifiers("E5 9LR").should == "E15000007"
     end
   end
 end

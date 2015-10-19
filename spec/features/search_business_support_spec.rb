@@ -34,14 +34,14 @@ describe "Search for business support" do
     end
     it "should filter the schemes by facet values" do
        facets = {
-          "areas" => ["london"],
+          "area_gss_codes" => ["E15000007"],
           "business_sizes" => ["up-to-249"],
           "sectors" => ["education"],
           "stages" => ["grow-and-sustain"]
         }
       content_api_has_business_support_scheme(@graduate_start_up_attrs.merge(facets), facets)
 
-      visit "/business-support-schemes.json?areas=london&business_sizes=up-to-249&sectors=education&stages=grow-and-sustain"
+      visit "/business-support-schemes.json?area_gss_codes=E15000007&business_sizes=up-to-249&sectors=education&stages=grow-and-sustain"
 
       parsed_response = JSON.parse(page.body)
       parsed_response["total"].should == 1
@@ -51,7 +51,7 @@ describe "Search for business support" do
       parsed_response["pages"].should == 1
       results = parsed_response["results"]
       results.first["title"].should == "Graduate start-up scheme"
-      results.first["areas"].should == ["london"]
+      results.first["area_gss_codes"].should == ["E15000007"]
     end
 
     it "should filter the schemes by facet values and areas" do
@@ -65,7 +65,7 @@ describe "Search for business support" do
       }
       imminence_has_areas_for_postcode("WC2B%206SE", [london])
       facets = {
-          "areas" => ["london", "wales", "scotland"],
+          "area_gss_codes" => ["E15000007", "W08000001", "S15000001"],
           "business_sizes" => ["up-to-249"],
           "sectors" => ["education"],
           "stages" => ["grow-and-sustain"]
@@ -82,12 +82,12 @@ describe "Search for business support" do
       parsed_response["pages"].should == 1
       results = parsed_response["results"]
       results.first["title"].should == "Graduate start-up scheme"
-      results.first["areas"].should == ["london","wales","scotland"]
+      results.first["area_gss_codes"].should == ["E15000007", "W08000001", "S15000001"]
     end
 
     it "should return no results with an incomplete postcode" do
       imminence_has_areas_for_postcode("WC2B",[])
-      facets = { "areas" => ["london", "wales", "scotland"] }
+      facets = { "area_gss_codes" => ["E15000007", "W08000001", "S15000001"] }
       content_api_has_business_support_scheme(@graduate_start_up_attrs.merge(facets), facets)
 
       visit "/business-support-schemes.json?postcode=WC2B"
