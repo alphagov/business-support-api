@@ -120,18 +120,27 @@ describe Scheme do
         "name" => "North East",
         "country_name" => "England",
         "type" => "LAC",
+        "codes" => {
+          "gss" => "E32000012",
+        },
       }
       area2 = {
         "slug" => "european-parliament",
         "name" => "European Parliament",
         "country_name" => "-",
         "type" => "EUP",
+        "codes" => {
+          "gss" => nil,
+        },
       }
       area3 = {
         "slug" => "london",
         "name" => "London",
         "country_name" => "England",
         "type" => "EUR",
+        "codes" => {
+          "gss" => "E15000007",
+        },
       }
 
       GdsApi::Imminence.any_instance.stub(:areas_for_postcode)
