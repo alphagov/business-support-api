@@ -32,13 +32,6 @@ class Scheme < OpenStruct
     Scheme.new(content_api.artefact(slug).to_hash)
   end
 
-  def initialize(artefact = {})
-    super()
-    artefact.each do |k,v|
-      self.send("#{k}=", v)
-    end
-  end
-
   def as_json(options={})
     self.marshal_dump
   end
