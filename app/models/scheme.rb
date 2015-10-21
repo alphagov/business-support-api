@@ -4,15 +4,22 @@ require 'gds_api/helpers'
 class Scheme < OpenStruct
   extend GdsApi::Helpers
 
-  FACET_KEYS = [:areas, :business_sizes, :locations, :sectors, :stages, :support_types]
+  FACET_KEYS = [
+    :area_gss_codes,
+    :business_sizes,
+    :locations,
+    :sectors,
+    :stages,
+    :support_types,
+  ]
+
   # This list should stay in sync with Publisher's AREA_TYPES list
   # (https://github.com/alphagov/publisher/blob/master/app/models/area.rb#L7).
   WHITELISTED_AREA_CODES = ["EUR", "CTY", "DIS", "LBO", "LGD", "MTD", "UTA"]
 
   def self.lookup(params={})
-
     postcode = params.delete(:postcode)
-    params[:areas] = area_identifiers(postcode) if postcode
+    params[:area_gss_codes] = area_identifiers(postcode) if postcode
 
     response = content_api.business_support_schemes(params)
 
@@ -25,13 +32,6 @@ class Scheme < OpenStruct
     Scheme.new(content_api.artefact(slug).to_hash)
   end
 
-  def initialize(artefact = {})
-    super()
-    artefact.each do |k,v|
-      self.send("#{k}=", v)
-    end
-  end
-
   def as_json(options={})
     self.marshal_dump
   end
@@ -41,7 +41,7 @@ class Scheme < OpenStruct
     return [] unless areas_response
 
     areas = areas_response["results"].map do |area|
-      area["slug"] if WHITELISTED_AREA_CODES.include?(area["type"])
+      area["codes"]["gss"] if WHITELISTED_AREA_CODES.include?(area["type"])
     end
     areas.reject(&:blank?).join(",")
   end
