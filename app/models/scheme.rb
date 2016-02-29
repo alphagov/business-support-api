@@ -13,9 +13,11 @@ class Scheme < OpenStruct
     :support_types,
   ]
 
-  # This list should stay in sync with Publisher's AREA_TYPES list
-  # (https://github.com/alphagov/publisher/blob/master/app/models/area.rb#L7).
-  WHITELISTED_AREA_CODES = ["EUR", "CTY", "DIS", "LBO", "LGD", "MTD", "UTA"]
+  # This list should stay in sync with Publisher's Area::AREA_TYPES list:
+  # https://github.com/alphagov/publisher/blob/master/app/models/area.rb#L7-L10
+  # and Imminences areas route constraint:
+  # https://github.com/alphagov/imminence/blob/master/config/routes.rb#L13-L17
+  WHITELISTED_AREA_CODES = ["EUR", "CTY", "DIS", "LBO", "LGD", "MTD", "UTA", "COI"]
 
   def self.lookup(params={})
     postcode = params.delete(:postcode)
