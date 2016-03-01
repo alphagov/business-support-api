@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PaginationPresenter do
 
   it "should initialize pagination values and paging links" do
-    Plek.any_instance.stub(:website_root).and_return("http://test.gov.uk")
+    allow_any_instance_of(Plek).to receive(:website_root).and_return("http://test.gov.uk")
 
     schemes = []
     25.times { |n| schemes << Scheme.new({:id => "http://test.gov.uk/scheme#{n+1}.json"}) }
@@ -14,16 +14,16 @@ describe PaginationPresenter do
     presenter = PaginationPresenter.new(results, url_helper)
     json_hash = presenter.as_json
 
-    json_hash[:start_index].should == 26
-    json_hash[:page_size].should == 25
-    json_hash[:page_number.should] == 2
-    json_hash[:total].should == 100
-    json_hash[:pages].should == 4
-    json_hash[:results].size.should == 25
+    expect(json_hash[:start_index]).to eq(26)
+    expect(json_hash[:page_size]).to eq(25)
+    expect(json_hash[:current_page]).to eq(2)
+    expect(json_hash[:total]).to eq(100)
+    expect(json_hash[:pages]).to eq(4)
+    expect(json_hash[:results].size).to eq(25)
 
     links = json_hash[:_response_info][:links]
-    links.size.should == 2
-    links.first.href.should == "http://test.gov.uk/business-support-schemes.json?page_number=3&page_size=25"
-    links.last.href.should == "http://test.gov.uk/business-support-schemes.json?page_number=1&page_size=25"
+    expect(links.size).to eq(2)
+    expect(links.first.href).to eq("http://test.gov.uk/business-support-schemes.json?page_number=3&page_size=25")
+    expect(links.last.href).to eq("http://test.gov.uk/business-support-schemes.json?page_number=1&page_size=25")
   end
 end

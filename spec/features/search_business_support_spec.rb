@@ -21,10 +21,10 @@ describe "Search for business support" do
   it "should return all schemes where no filtering facets are specified" do
     visit "/business-support-schemes.json"
     parsed_response = JSON.parse(page.body)
-    parsed_response["total"].should == 2
+    expect(parsed_response["total"]).to eq(2)
     results = parsed_response["results"]
-    results.first["title"].should == "Graduate start-up scheme"
-    results.second["title"].should == "Manufacturing Services scheme - Wales"
+    expect(results.first["title"]).to eq("Graduate start-up scheme")
+    expect(results.second["title"]).to eq("Manufacturing Services scheme - Wales")
   end
 
   describe "with filtering parameters" do
@@ -44,14 +44,14 @@ describe "Search for business support" do
       visit "/business-support-schemes.json?area_gss_codes=E15000007&business_sizes=up-to-249&sectors=education&stages=grow-and-sustain"
 
       parsed_response = JSON.parse(page.body)
-      parsed_response["total"].should == 1
-      parsed_response["page_size"].should == 1
-      parsed_response["current_page"].should == 1
-      parsed_response["start_index"].should == 1
-      parsed_response["pages"].should == 1
+      expect(parsed_response["total"]).to eq(1)
+      expect(parsed_response["page_size"]).to eq(1)
+      expect(parsed_response["current_page"]).to eq(1)
+      expect(parsed_response["start_index"]).to eq(1)
+      expect(parsed_response["pages"]).to eq(1)
       results = parsed_response["results"]
-      results.first["title"].should == "Graduate start-up scheme"
-      results.first["area_gss_codes"].should == ["E15000007"]
+      expect(results.first["title"]).to eq("Graduate start-up scheme")
+      expect(results.first["area_gss_codes"]).to eq(["E15000007"])
     end
 
     it "should filter the schemes by facet values and areas" do
@@ -75,14 +75,14 @@ describe "Search for business support" do
       visit "/business-support-schemes.json?postcode=WC2B%206SE&business_sizes=up-to-249&sectors=education&stages=grow-and-sustain"
 
       parsed_response = JSON.parse(page.body)
-      parsed_response["total"].should == 1
-      parsed_response["page_size"].should == 1
-      parsed_response["current_page"].should == 1
-      parsed_response["start_index"].should == 1
-      parsed_response["pages"].should == 1
+      expect(parsed_response["total"]).to eq(1)
+      expect(parsed_response["page_size"]).to eq(1)
+      expect(parsed_response["current_page"]).to eq(1)
+      expect(parsed_response["start_index"]).to eq(1)
+      expect(parsed_response["pages"]).to eq(1)
       results = parsed_response["results"]
-      results.first["title"].should == "Graduate start-up scheme"
-      results.first["area_gss_codes"].should == ["E15000007", "W08000001", "S15000001"]
+      expect(results.first["title"]).to eq("Graduate start-up scheme")
+      expect(results.first["area_gss_codes"]).to eq(["E15000007", "W08000001", "S15000001"])
     end
 
     it "should return no results with an incomplete postcode" do
@@ -93,7 +93,7 @@ describe "Search for business support" do
       visit "/business-support-schemes.json?postcode=WC2B"
 
       parsed_response = JSON.parse(page.body)
-      parsed_response["total"].should == 0
+      expect(parsed_response["total"]).to eq(0)
     end
 
   end

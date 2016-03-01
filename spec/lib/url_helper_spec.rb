@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "UrlHelper" do
   before do
-    Plek.any_instance.stub(:website_root).and_return('http://test.gov.uk')
+    allow_any_instance_of(Plek).to receive(:website_root).and_return('http://test.gov.uk')
 
     @schemes = [].tap do |ary|
       45.times { |n| ary << :"scheme#{n+1}" }
@@ -13,24 +13,24 @@ describe "UrlHelper" do
     results = Pagination::PaginatedResultSet.new(@schemes, 2, 15, 45)
     helper = UrlHelper.new('api', {:page_number => 2, :page_size => 15}, results)
 
-    helper.links.first.href.should == "http://test.gov.uk/api/business-support-schemes.json?page_number=3&page_size=15"
-    helper.links.first.attr_pairs.should == [["rel", "next"]]
-    helper.links.last.href.should == "http://test.gov.uk/api/business-support-schemes.json?page_number=1&page_size=15"
-    helper.links.last.attr_pairs.should == [["rel", "previous"]]
+    expect(helper.links.first.href).to eq("http://test.gov.uk/api/business-support-schemes.json?page_number=3&page_size=15")
+    expect(helper.links.first.attr_pairs).to eq([["rel", "next"]])
+    expect(helper.links.last.href).to eq("http://test.gov.uk/api/business-support-schemes.json?page_number=1&page_size=15")
+    expect(helper.links.last.attr_pairs).to eq([["rel", "previous"]])
   end
   it "should only provide necessary links" do
     results = Pagination::PaginatedResultSet.new(@schemes, 1, 15, 45)
     helper = UrlHelper.new('api', {:page_number => 1, :page_size => 15}, results)
 
-    helper.links.size.should == 1
-    helper.links.first.href.should == "http://test.gov.uk/api/business-support-schemes.json?page_number=2&page_size=15"
-    helper.links.first.attr_pairs.should == [["rel", "next"]]
+    expect(helper.links.size).to eq(1)
+    expect(helper.links.first.href).to eq("http://test.gov.uk/api/business-support-schemes.json?page_number=2&page_size=15")
+    expect(helper.links.first.attr_pairs).to eq([["rel", "next"]])
 
     results = Pagination::PaginatedResultSet.new(@schemes, 3, 15, 45)
     helper = UrlHelper.new('api', {:page_number => 3, :page_size => 15}, results)
 
-    helper.links.size.should == 1
-    helper.links.first.href.should == "http://test.gov.uk/api/business-support-schemes.json?page_number=2&page_size=15"
-    helper.links.first.attr_pairs.should == [["rel", "previous"]]
+    expect(helper.links.size).to eq(1)
+    expect(helper.links.first.href).to eq("http://test.gov.uk/api/business-support-schemes.json?page_number=2&page_size=15")
+    expect(helper.links.first.attr_pairs).to eq([["rel", "previous"]])
   end
 end

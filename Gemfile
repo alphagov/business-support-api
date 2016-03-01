@@ -16,8 +16,8 @@ else
 end
 
 group :development, :test do
-  gem 'capybara', '2.1.0'
-  gem 'rspec-rails', '2.14.0'
+  gem 'capybara', '~> 2.6.2'
+  gem 'rspec-rails', '~> 3.4.2'
   gem 'simplecov-rcov', '0.2.3', :require => false
   gem 'ci_reporter', '1.9.0'
   gem 'webmock', '1.11.0', :require => false
