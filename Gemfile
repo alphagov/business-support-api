@@ -19,7 +19,6 @@ group :development, :test do
   gem 'capybara', '~> 2.6.2'
   gem 'rspec-rails', '~> 3.4.2'
   gem 'simplecov-rcov', '0.2.3', :require => false
-  gem 'ci_reporter', '1.9.0'
-  gem 'webmock', '1.11.0', :require => false
-  gem 'minitest', '5.5.1'
+  gem 'ci_reporter_rspec'
+  gem 'webmock', '~> 1.24.0', :require => false
 end
