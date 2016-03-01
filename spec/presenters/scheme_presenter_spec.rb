@@ -1,4 +1,5 @@
-require 'spec_helper'
+require 'rails_helper'
+require 'url_helper'
 
 describe "SchemePresenter" do
   it "should format the scheme as json" do

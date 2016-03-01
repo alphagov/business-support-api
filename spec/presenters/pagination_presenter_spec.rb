@@ -1,4 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
+require 'pagination'
+require 'url_helper'
 
 describe PaginationPresenter do
 

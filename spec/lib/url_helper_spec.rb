@@ -1,6 +1,8 @@
-require 'spec_helper'
+require 'rails_helper'
+require 'url_helper'
+require 'pagination'
 
-describe "UrlHelper" do
+describe UrlHelper do
   before do
     allow_any_instance_of(Plek).to receive(:website_root).and_return('http://test.gov.uk')
 

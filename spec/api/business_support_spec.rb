@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'pagination'
 
 describe 'serving business support schemes', type: :request do
