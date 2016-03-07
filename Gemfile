@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.14.1'
+gem 'rails', '4.1.14.2'
 
 gem 'unicorn', '4.6.3'
 gem 'link_header', '0.0.7'
@@ -16,10 +16,9 @@ else
 end
 
 group :development, :test do
-  gem 'capybara', '2.1.0'
-  gem 'rspec-rails', '2.14.0'
+  gem 'capybara', '~> 2.6.2'
+  gem 'rspec-rails', '~> 3.4.2'
   gem 'simplecov-rcov', '0.2.3', :require => false
-  gem 'ci_reporter', '1.9.0'
-  gem 'webmock', '1.11.0', :require => false
-  gem 'minitest', '5.5.1'
+  gem 'ci_reporter_rspec'
+  gem 'webmock', '~> 1.24.0', :require => false
 end

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Scheme do
   describe "looking up schemes" do
@@ -9,7 +9,7 @@ describe Scheme do
       @support_types = %w(finance loan)
       @location = 'wales'
 
-      GdsApi::ContentApi.any_instance.stub(:business_support_schemes)
+      allow_any_instance_of(GdsApi::ContentApi).to receive(:business_support_schemes)
         .and_return("results" => [])
     end
 
@@ -20,7 +20,7 @@ describe Scheme do
     end
 
     it "should fetch the schemes from content_api" do
-      GdsApi::ContentApi.any_instance.should_receive(:business_support_schemes)
+      expect_any_instance_of(GdsApi::ContentApi).to receive(:business_support_schemes)
         .with(
           :sectors => @sector,
           :stages => @stage,
@@ -51,11 +51,11 @@ describe Scheme do
       artefact1 = {'identifier' => '666', 'title' => 'artefact1'}.merge(facets)
       artefact2 = {'identifier' => '999', 'title' => 'artefact2'}.merge(facets)
 
-      GdsApi::ContentApi.any_instance.stub(:business_support_schemes)
+      allow_any_instance_of(GdsApi::ContentApi).to receive(:business_support_schemes)
         .and_return("results" => [artefact1, artefact2])
 
-      Scheme.should_receive(:new).with(artefact1).and_return(:scheme1)
-      Scheme.should_receive(:new).with(artefact2).and_return(:scheme2)
+      expect(Scheme).to receive(:new).with(artefact1).and_return(:scheme1)
+      expect(Scheme).to receive(:new).with(artefact2).and_return(:scheme2)
 
       schemes = Scheme.lookup(
         :sectors => @sector,
@@ -64,7 +64,7 @@ describe Scheme do
         :support_types => @support_types,
         :locations => @location,
       )
-      schemes.should == [:scheme1, :scheme2]
+      expect(schemes).to eq([:scheme1, :scheme2])
     end
 
     describe "lookup" do
@@ -74,13 +74,13 @@ describe Scheme do
         artefact3 = {"identifier" => "3", "title" => "artefact3"}
         artefact4 = {"identifier" => "4", "title" => "artefact4"}
 
-        GdsApi::ContentApi.any_instance.stub(:business_support_schemes)
+        allow_any_instance_of(GdsApi::ContentApi).to receive(:business_support_schemes)
           .and_return("results" => [artefact4, artefact1, artefact3, artefact2])
 
-        Scheme.should_receive(:new).with(artefact1).and_return(:scheme1)
-        Scheme.should_receive(:new).with(artefact2).and_return(:scheme2)
-        Scheme.should_receive(:new).with(artefact3).and_return(:scheme3)
-        Scheme.should_receive(:new).with(artefact4).and_return(:scheme4)
+        expect(Scheme).to receive(:new).with(artefact1).and_return(:scheme1)
+        expect(Scheme).to receive(:new).with(artefact2).and_return(:scheme2)
+        expect(Scheme).to receive(:new).with(artefact3).and_return(:scheme3)
+        expect(Scheme).to receive(:new).with(artefact4).and_return(:scheme4)
       end
 
       it "should order the schemes by contentapi result order" do
@@ -91,7 +91,7 @@ describe Scheme do
           :support_types => @support_types,
           :location => @location,
         )
-        schemes.should == [:scheme4, :scheme1, :scheme3, :scheme2]
+        expect(schemes).to eq([:scheme4, :scheme1, :scheme3, :scheme2])
       end
     end
   end
@@ -107,9 +107,9 @@ describe Scheme do
         },
       )
 
-      s.foo.should == "bar"
-      s.something_else.should == "wibble"
-      s.details.should == { "foo" => "foo", "bar" => "bar" }
+      expect(s.foo).to eq("bar")
+      expect(s.something_else).to eq("wibble")
+      expect(s.details).to eq({ "foo" => "foo", "bar" => "bar" })
     end
   end
 
@@ -143,10 +143,10 @@ describe Scheme do
         },
       }
 
-      GdsApi::Imminence.any_instance.stub(:areas_for_postcode)
+      allow_any_instance_of(GdsApi::Imminence).to receive(:areas_for_postcode)
         .and_return("results" => [area1,area2,area3])
 
-      Scheme.area_identifiers("E5 9LR").should == "E15000007"
+      expect(Scheme.area_identifiers("E5 9LR")).to eq("E15000007")
     end
   end
 end

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe "View a business support scheme" do
   before do
@@ -12,18 +12,18 @@ describe "View a business support scheme" do
         "details" => { "short_description" => "Some blurb abour the Graduate start-up scheme",
                        "body" => "More about the scheme, all the detailed explanation." } }.to_json)
 
-    Plek.any_instance.stub(:website_root).and_return("https://www.gov.uk")
+    allow_any_instance_of(Plek).to receive(:website_root).and_return("https://www.gov.uk")
 
     visit '/business-support-schemes/graduate-start-up.json'
   end
   it "should display the details for the scheme" do
     parsed_response = JSON.parse(page.body)
 
-    parsed_response["id"].should == "https://www.gov.uk/business-support-schemes/graduate-start-up.json"
-    parsed_response["title"].should == "Graduate start up"
-    parsed_response["web_url"].should == "https://www.gov.uk/graduate-start-up"
-    parsed_response.keys.should_not include("super_secret_field")
-    parsed_response["details"]["short_description"].should == "Some blurb abour the Graduate start-up scheme"
-    parsed_response["details"]["body"].should == "More about the scheme, all the detailed explanation."
+    expect(parsed_response["id"]).to eq("https://www.gov.uk/business-support-schemes/graduate-start-up.json")
+    expect(parsed_response["title"]).to eq("Graduate start up")
+    expect(parsed_response["web_url"]).to eq("https://www.gov.uk/graduate-start-up")
+    expect(parsed_response.keys).not_to include("super_secret_field")
+    expect(parsed_response["details"]["short_description"]).to eq("Some blurb abour the Graduate start-up scheme")
+    expect(parsed_response["details"]["body"]).to eq("More about the scheme, all the detailed explanation.")
   end
 end
