@@ -4,6 +4,8 @@ require 'gds_api/helpers'
 class Scheme < OpenStruct
   extend GdsApi::Helpers
 
+  RecordNotFound = Class.new(StandardError)
+
   FACET_KEYS = [
     :area_gss_codes,
     :business_sizes,
@@ -31,7 +33,12 @@ class Scheme < OpenStruct
   end
 
   def self.find_by_slug(slug)
-    Scheme.new(content_api.artefact(slug).to_hash)
+    artefact = content_api.artefact(slug)
+    if artefact
+      Scheme.new(artefact.to_hash)
+    else
+      raise RecordNotFound, slug
+    end
   end
 
   def as_json(options={})

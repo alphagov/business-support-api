@@ -149,4 +149,42 @@ describe Scheme do
       expect(Scheme.area_identifiers("E5 9LR")).to eq("E15000007")
     end
   end
+
+  describe '.find_by_slug' do
+    include GdsApi::TestHelpers::ContentApi
+    let(:slug) { 'foo' }
+
+    it 'requests the artefact for the slug from the content-api' do
+      expect_any_instance_of(GdsApi::ContentApi).to receive(:artefact).with(slug).and_return({})
+      Scheme.find_by_slug(slug)
+    end
+
+    context 'for a slug that exists in the content-api' do
+      let(:artefact) { artefact_for_slug('foo', format: 'business_support') }
+
+      before do
+        content_api_has_an_artefact(slug, artefact)
+      end
+
+      subject(:scheme) { Scheme.find_by_slug(slug) }
+
+      it 'returns a Scheme instance constructed from the content-api artefact' do
+        expect(subject.title).to eq artefact['title']
+        expect(subject.format).to eq artefact['format']
+      end
+    end
+
+    context 'for a slug that does not exist in the content-api' do
+      let(:slug) { 'foo' }
+      before do
+        content_api_does_not_have_an_artefact(slug)
+      end
+
+      it 'raises a RecordNotFound error' do
+        expect {
+          Scheme.find_by_slug(slug)
+        }.to raise_error Scheme::RecordNotFound, slug
+      end
+    end
+  end
 end
