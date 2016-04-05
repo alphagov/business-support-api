@@ -31,6 +31,10 @@ class BusinessSupportController < ApplicationController
     respond_to do |format|
       format.json { render json: SchemePresenter.new(scheme, UrlHelper.new(api_prefix, params)) }
     end
+  rescue Scheme::RecordNotFound
+    respond_to do |format|
+      format.json { render json: { error: "scheme '#{params[:slug]}' not found"}, status: 404 }
+    end
   end
 
   private

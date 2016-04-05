@@ -44,5 +44,12 @@ describe BusinessSupportController do
       get :show, :slug => "foo"
       expect(response.status).to eq(406)
     end
+
+    it "should 404 if the slug is not a business support scheme" do
+      content_api_does_not_have_an_artefact('bar')
+      get :show, :slug => "bar", format: :json
+      expect(response.status).to eq(404)
+    end
+
   end
 end
