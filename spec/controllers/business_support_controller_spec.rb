@@ -1,8 +1,11 @@
 require 'rails_helper'
 
 describe BusinessSupportController do
-
   describe "GET search" do
+    before do
+      content_api_has_default_business_support_schemes
+    end
+
     it "should set expiry headers" do
       get :search, :format => :json
       expect(response.headers["Cache-Control"]).to eq("max-age=1800, public")
@@ -21,13 +24,18 @@ describe BusinessSupportController do
   end
 
   describe "GET show" do
+    before do
+      stub_content_api_default_artefact
+      content_api_has_default_business_support_schemes
+    end
+
     it "should set expiry headers" do
       get :show, :slug => "foo", :format => :json
       expect(response.headers["Cache-Control"]).to eq("max-age=1800, public")
     end
 
     it "should accept json requests" do
-      get :show, :slug => "bar", :format => :json
+      get :show, :slug => "foo", :format => :json
       expect(response).to be_success
       expect(response.header['Content-Type']).to include 'application/json'
     end
