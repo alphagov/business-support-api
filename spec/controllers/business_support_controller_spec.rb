@@ -51,5 +51,10 @@ describe BusinessSupportController do
       expect(response.status).to eq(404)
     end
 
+    it "should 410 if the slug is a withdrawn business support scheme" do
+      content_api_has_an_archived_artefact('bar')
+      get :show, :slug => "bar", format: :json
+      expect(response.status).to eq(410)
+    end
   end
 end

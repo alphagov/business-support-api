@@ -35,6 +35,10 @@ class BusinessSupportController < ApplicationController
     respond_to do |format|
       format.json { render json: { error: "scheme '#{params[:slug]}' not found"}, status: 404 }
     end
+  rescue Scheme::RecordGone
+    respond_to do |format|
+      format.json { render json: { error: "scheme '#{params[:slug]}' withdrawn"}, status: 410 }
+    end
   end
 
   private

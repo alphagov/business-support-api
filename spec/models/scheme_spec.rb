@@ -155,12 +155,12 @@ describe Scheme do
     let(:slug) { 'foo' }
 
     it 'requests the artefact for the slug from the content-api' do
-      expect_any_instance_of(GdsApi::ContentApi).to receive(:artefact).with(slug).and_return({})
+      expect_any_instance_of(GdsApi::ContentApi).to receive(:artefact!).with(slug).and_return({})
       Scheme.find_by_slug(slug)
     end
 
     context 'for a slug that exists in the content-api' do
-      let(:artefact) { artefact_for_slug('foo', format: 'business_support') }
+      let(:artefact) { artefact_for_slug(slug, format: 'business_support') }
 
       before do
         content_api_has_an_artefact(slug, artefact)
@@ -184,6 +184,18 @@ describe Scheme do
         expect {
           Scheme.find_by_slug(slug)
         }.to raise_error Scheme::RecordNotFound, slug
+      end
+    end
+
+    context 'for a slug that used to exist in the content-apim' do
+      before do
+        content_api_has_an_archived_artefact(slug)
+      end
+
+      it 'raises a RecordGone error' do
+        expect {
+          Scheme.find_by_slug(slug)
+        }.to raise_error Scheme::RecordGone, slug
       end
     end
   end
