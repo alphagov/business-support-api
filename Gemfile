@@ -12,7 +12,7 @@ gem 'airbrake', '3.1.15'
 if ENV['API_DEV']
   gem 'gds-api-adapters', :path => '../gds-api-adapters'
 else
- gem 'gds-api-adapters', '20.1.1'
+  gem 'gds-api-adapters', '20.1.1'
 end
 
 group :development, :test do
@@ -21,4 +21,5 @@ group :development, :test do
   gem 'simplecov-rcov', '0.2.3', :require => false
   gem 'ci_reporter_rspec'
   gem 'webmock', '~> 1.24.0', :require => false
+  gem 'pry'
 end
