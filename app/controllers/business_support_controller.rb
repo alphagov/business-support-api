@@ -18,7 +18,7 @@ class BusinessSupportController < ApplicationController
     end
 
     schemes = paginate(schemes, params[:page_number], page_size)
-    link_helper = UrlHelper.new(api_prefix, params, schemes)
+    link_helper = UrlHelper.new(api_prefix, filtered_params, schemes)
 
     respond_to do |format|
       format.json { render json: PaginationPresenter.new(schemes, link_helper) }
@@ -29,7 +29,7 @@ class BusinessSupportController < ApplicationController
     scheme = Scheme.find_by_slug(params[:slug])
 
     respond_to do |format|
-      format.json { render json: SchemePresenter.new(scheme, UrlHelper.new(api_prefix, params)) }
+      format.json { render json: SchemePresenter.new(scheme, UrlHelper.new(api_prefix, filtered_params)) }
     end
   rescue Scheme::RecordNotFound
     respond_to do |format|
