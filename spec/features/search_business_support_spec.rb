@@ -56,7 +56,6 @@ describe "Search for business support" do
 
     it "should filter the schemes by facet values and areas" do
       london = {
-        "slug" => "london",
         "name" => "London",
         "type" => "EUR",
         "codes" => {

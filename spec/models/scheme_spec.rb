@@ -116,7 +116,6 @@ describe Scheme do
   describe "area codes returned from imminence" do
     it "should only use whitelisted area types" do
       area1 = {
-        "slug" => "north-east",
         "name" => "North East",
         "country_name" => "England",
         "type" => "LAC",
@@ -125,7 +124,6 @@ describe Scheme do
         },
       }
       area2 = {
-        "slug" => "european-parliament",
         "name" => "European Parliament",
         "country_name" => "-",
         "type" => "EUP",
@@ -134,7 +132,6 @@ describe Scheme do
         },
       }
       area3 = {
-        "slug" => "london",
         "name" => "London",
         "country_name" => "England",
         "type" => "EUR",
