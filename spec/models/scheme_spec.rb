@@ -68,30 +68,66 @@ describe Scheme do
     end
 
     describe "lookup" do
-      before do
-        artefact1 = {"identifier" => "1", "title" => "artefact1"}
-        artefact2 = {"identifier" => "2", "title" => "artefact2"}
-        artefact3 = {"identifier" => "3", "title" => "artefact3"}
-        artefact4 = {"identifier" => "4", "title" => "artefact4"}
+      context "when schemes are found" do
+        before do
+          artefact1 = {"identifier" => "1", "title" => "artefact1"}
+          artefact2 = {"identifier" => "2", "title" => "artefact2"}
+          artefact3 = {"identifier" => "3", "title" => "artefact3"}
+          artefact4 = {"identifier" => "4", "title" => "artefact4"}
 
-        allow_any_instance_of(GdsApi::ContentApi).to receive(:business_support_schemes)
+          allow_any_instance_of(GdsApi::ContentApi).to receive(:business_support_schemes)
           .and_return("results" => [artefact4, artefact1, artefact3, artefact2])
 
-        expect(Scheme).to receive(:new).with(artefact1).and_return(:scheme1)
-        expect(Scheme).to receive(:new).with(artefact2).and_return(:scheme2)
-        expect(Scheme).to receive(:new).with(artefact3).and_return(:scheme3)
-        expect(Scheme).to receive(:new).with(artefact4).and_return(:scheme4)
-      end
+          expect(Scheme).to receive(:new).with(artefact1).and_return(:scheme1)
+          expect(Scheme).to receive(:new).with(artefact2).and_return(:scheme2)
+          expect(Scheme).to receive(:new).with(artefact3).and_return(:scheme3)
+          expect(Scheme).to receive(:new).with(artefact4).and_return(:scheme4)
+        end
 
-      it "should order the schemes by contentapi result order" do
-        schemes = Scheme.lookup(
+        it "should order the schemes by contentapi result order" do
+          schemes = Scheme.lookup(
           :sectors => @sector,
           :stage => @stage,
           :size => @size,
           :support_types => @support_types,
           :location => @location,
-        )
-        expect(schemes).to eq([:scheme4, :scheme1, :scheme3, :scheme2])
+          )
+          expect(schemes).to eq([:scheme4, :scheme1, :scheme3, :scheme2])
+        end
+      end
+
+      context "when a schemes is not found" do
+        before do
+          allow_any_instance_of(GdsApi::ContentApi).to receive(:business_support_schemes).and_raise(GdsApi::HTTPNotFound.new(404))
+        end
+
+        it "raises a RecordNotFound exception" do
+          params = {
+            :sectors => 'wizardry',
+            :stages => 'start-up',
+            :business_sizes => 'under-10',
+            :support_types => %w(finance loan),
+            :locations => 'hogsmeade',
+          }
+          expect { Scheme.lookup(params) }.to raise_error(Scheme::RecordNotFound)
+        end
+      end
+
+      context "when a scheme is gone" do
+        before do
+            allow_any_instance_of(GdsApi::ContentApi).to receive(:business_support_schemes).and_raise(GdsApi::HTTPGone.new(410))
+        end
+
+        it "raises a RecordGone exception" do
+          params = {
+            :sectors => 'dark arts',
+            :stages => 'start-up',
+            :business_sizes => 'under-10',
+            :support_types => %w(finance loan),
+            :locations => 'knockturn alley',
+          }
+          expect { Scheme.lookup(params) }.to raise_error(Scheme::RecordGone)
+        end
       end
     end
   end

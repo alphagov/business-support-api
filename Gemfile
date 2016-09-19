@@ -5,14 +5,14 @@ gem 'rails', '4.2.7.1'
 gem 'unicorn', '4.6.3'
 gem 'link_header', '0.0.7'
 
-gem 'plek', '1.7.0'
+gem 'plek', '~> 1.9.0'
 gem 'logstasher', '0.4.8'
 gem 'airbrake', '3.1.15'
 
 if ENV['API_DEV']
   gem 'gds-api-adapters', :path => '../gds-api-adapters'
 else
-  gem 'gds-api-adapters', '20.1.1'
+  gem 'gds-api-adapters', '36.0.0'
 end
 
 group :development, :test do
