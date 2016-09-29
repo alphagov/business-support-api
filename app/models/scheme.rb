@@ -25,12 +25,14 @@ class Scheme < OpenStruct
   def self.lookup(params={})
     postcode = params.delete(:postcode)
     params[:area_gss_codes] = area_identifiers(postcode) if postcode
-
+  begin
     response = content_api.business_support_schemes(params)
-
-    response["results"].map do |s|
-      self.new(s)
-    end
+  rescue GdsApi::HTTPNotFound
+    raise RecordNotFound
+  rescue GdsApi::HTTPGone
+    raise RecordGone
+  end
+    response["results"].map { |s| self.new(s) }
   end
 
   def self.find_by_slug(slug)
@@ -47,9 +49,11 @@ class Scheme < OpenStruct
   end
 
   def self.area_identifiers(postcode)
+  begin
     areas_response = imminence_api.areas_for_postcode(postcode)
-    return [] unless areas_response
-
+  rescue GdsApi::HTTPNotFound, GdsApi::HTTPGone
+    []
+  end
     areas = areas_response["results"].map do |area|
       area["codes"]["gss"] if WHITELISTED_AREA_CODES.include?(area["type"])
     end
