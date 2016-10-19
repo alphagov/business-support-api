@@ -49,14 +49,12 @@ class Scheme < OpenStruct
   end
 
   def self.area_identifiers(postcode)
-  begin
     areas_response = imminence_api.areas_for_postcode(postcode)
-  rescue GdsApi::HTTPNotFound, GdsApi::HTTPGone
-    []
-  end
     areas = areas_response["results"].map do |area|
       area["codes"]["gss"] if WHITELISTED_AREA_CODES.include?(area["type"])
     end
     areas.reject(&:blank?).join(",")
+  rescue GdsApi::HTTPNotFound, GdsApi::HTTPGone
+    []
   end
 end
