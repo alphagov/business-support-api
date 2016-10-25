@@ -95,5 +95,21 @@ describe "Search for business support" do
       expect(parsed_response["total"]).to eq(0)
     end
 
+    it "should return no results with a postcode imminence doesn't know about" do
+      # NOTE: If we ask imminence about apostcode that it doesn't know about
+      # it will actually return an HTTP 200 where the json response contains
+      # an empty set of areas and a "status":"404" in "_response_info".
+      # This probably isn't a intentional design choice, so this spec protects
+      # us against that behaviour changing to return a full HTTP 404.
+      stub_request(:get, %r{\A#{Plek.current.find('imminence')}/areas/WC2B%206SE\.json})
+        .to_return(status: 404)
+      facets = { "area_gss_codes" => ["E15000007", "W08000001", "S15000001"] }
+      content_api_has_business_support_scheme(@graduate_start_up_attrs.merge(facets), facets)
+
+      visit "/business-support-schemes.json?postcode=WC2B%206SE"
+
+      parsed_response = JSON.parse(page.body)
+      expect(parsed_response["total"]).to eq(0)
+    end
   end
 end
