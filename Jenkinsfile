@@ -23,6 +23,16 @@ node {
       govuk.setEnvar('RAILS_ENV', 'test')
       govuk.runRakeTask("ci:setup:rspec default")
     }
+
+    if (env.BRANCH_NAME == 'master') {
+      stage('Push release tag') {
+        govuk.pushTag(REPOSITORY, BRANCH_NAME, 'release_' + BUILD_NUMBER)
+      }
+
+      stage('Deploy to Integration') {
+        govuk.deployIntegration(REPOSITORY, BRANCH_NAME, 'release', 'deploy')
+      }
+    }
   } catch (e) {
     currentBuild.result = 'FAILED'
     step([$class: 'Mailer',
