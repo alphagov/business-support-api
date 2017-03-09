@@ -21,6 +21,11 @@ describe BusinessSupportController do
       get :search
       expect(response.status).to eq(406)
     end
+
+    it "should set a deprecation warning header" do
+      get :search, :format => :json
+      expect(response.header['Warning']).to include '299'
+    end
   end
 
   describe "GET show" do
@@ -43,6 +48,11 @@ describe BusinessSupportController do
     it "should deny other formats" do
       get :show, :slug => "foo"
       expect(response.status).to eq(406)
+    end
+
+    it "should set a deprecation warning header" do
+      get :show, :slug => "foo", :format => :json
+      expect(response.header['Warning']).to include '299'
     end
 
     it "should 404 if the slug is not a business support scheme" do
