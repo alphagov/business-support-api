@@ -5,6 +5,7 @@ class BusinessSupportController < ApplicationController
 
   before_filter :set_expiry
   before_filter :only_json
+  before_filter :warning_http_header
 
   include Pagination
 
@@ -54,6 +55,10 @@ class BusinessSupportController < ApplicationController
 
   def only_json
     render :nothing => true, :status => 406 unless params[:format] == 'json'
+  end
+
+  def warning_http_header
+    response.headers["Warning"] = '299 - "The business support API is now deprecated and will be removed on Tuesday 18 April 2017; please use https://www.gov.uk/api/search.json?filter_document_type=business_finance_support_scheme instead to get all schemes"'
   end
 
 end
