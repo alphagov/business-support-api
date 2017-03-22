@@ -58,7 +58,7 @@ class BusinessSupportController < ApplicationController
   end
 
   def warning_http_header
-    response.headers["Warning"] = '299 - "The business support API is now deprecated and will be removed on Tuesday 18 April 2017; please use https://www.gov.uk/api/search.json?filter_document_type=business_finance_support_scheme instead to get all schemes"'
+    response.headers["Warning"] = '299 - "The business support API is now deprecated and will be removed on Monday 24 April 2017; please use https://www.gov.uk/api/search.json?filter_document_type=business_finance_support_scheme instead to get all schemes"'
   end
 
 end
