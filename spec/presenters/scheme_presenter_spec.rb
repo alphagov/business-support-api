@@ -4,7 +4,6 @@ require 'url_helper'
 describe "SchemePresenter" do
   it "should format the scheme as json" do
     allow_any_instance_of(Plek).to receive(:website_root).and_return("http://test.gov.uk")
-    warning = "The business support API is now deprecated and will be removed on Monday 24 April 2017; please use https://www.gov.uk/api/search.json?filter_document_type=business_finance_support_scheme instead to get all schemes"
     scheme = Scheme.new({
       :id => "http://foo.com/bar/baz.json",
       :identifier => "1234",
@@ -22,6 +21,5 @@ describe "SchemePresenter" do
     expect(json_hash[:identifier]).to eq("1234")
     expect(json_hash[:title]).to eq("Baz and all that jazz")
     expect(json_hash[:details]).to eq({:additional_information => "Bloop"})
-    expect(json_hash[:_warning]).to eq(warning)
   end
 end
